@@ -1,4 +1,4 @@
-# Using Persistent Caching with Apache Ignite/GridGain
+# Using persistent caching with Apache Ignite/GridGain
 
 This tutorial introduces how to use Apache Ignite or GridGain (GG) to add persistent storage for important data. [Persistent](https://www.gridgain.com/docs/latest/developers-guide/persistence/native-persistence) storage ensures durability, fault tolerance, and data availability after system restarts.
 
@@ -15,9 +15,9 @@ The complete example implementation is available in the GitHub [repository](http
 To follow this tutorial, you will need:
 
 - A running Apache Ignite or GridGain cluster.
-- Java Developer Kit (JDK), version 8 or later. For details, check the compatibility guides for GridGain ([GG8](https://www.gridgain.com/docs/latest/developers-guide/setup), [GG9](https://www.gridgain.com/docs/gridgain9/latest/quick-start/getting-started-guide)) or [Apache Ignite](https://ignite.apache.org/docs/latest/quick-start/java#installing-ignite).
+- JDK version 8 or later. For details, check the compatibility guides for GridGain ([GG8](https://www.gridgain.com/docs/latest/developers-guide/setup), [GG9](https://www.gridgain.com/docs/gridgain9/latest/quick-start/getting-started-guide)) or [Apache Ignite](https://ignite.apache.org/docs/latest/quick-start/java#installing-ignite).
 - Ignite/GridGain binaries and configuration files.
-- The Gson library for parsing JSON.
+- The Gson library for parsing JSON (or similar library).
 - The input JSON file (`data.json`) containing sample data.
 - Basic knowledge of Java programming and Ignite/GridGain concepts.
 
