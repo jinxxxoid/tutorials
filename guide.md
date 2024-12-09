@@ -1,8 +1,9 @@
 # Using persistent caching with Apache Ignite/GridGain
 
-This tutorial introduces how to use Apache Ignite or GridGain (GG) to add persistent storage for important data. [Persistent](https://www.gridgain.com/docs/latest/developers-guide/persistence/native-persistence) storage ensures durability, fault tolerance, and data availability after system restarts.
+This tutorial introduces how to use Apache Ignite or GridGain (GG) to add persistent storage for important data. [Persistent storage](https://www.gridgain.com/docs/latest/developers-guide/persistence/native-persistence) ensures durability, fault tolerance, and data availability after system restarts.
 
-We will demonstrate this using a simple example: logging people entering and exiting a building. This example uses Apache Ignite 2.16 (or you can use GridGain 8), but for GridGain 9 or Apache Ignite 3, persistence is handled with [tables](https://www.gridgain.com/docs/gridgain9/latest/developers-guide/cache).
+We will demonstrate this using a simple example: logging people entering and exiting a building. This example uses Apache Ignite 2.16 (or you can use GridGain 8). 
+If you want to try GridGain 9 or Apache Ignite 3, you should check how persistence is handled with [tables](https://www.gridgain.com/docs/gridgain9/latest/developers-guide/cache).
 
 We will use a JSON file as the input data source, though other formats like relational databases, CSV files, or real-time streams (e.g., Apache Kafka) can also be integrated into Ignite/GridGain.
 
@@ -69,7 +70,7 @@ or Windows:
 ignite.bat --config C:\path\to\ignite-config.xml
 ````
 
-Specify a path to config in your Java application code:
+Don't forget to specify a path to config in your Java application code too:
 ```java
 Ignite ignite = Ignition.start("/path/to/ignite-config.xml");
 ```
@@ -85,19 +86,19 @@ To enable auto-adjustment for dynamic clusters, add this line:
 ```java
 ignite.cluster().baselineAutoAdjustEnabled(true);
 ```
-**Use baseline topology**:
+**When to use baseline topology**:
 - If your cluster is dynamic (nodes frequently join or leave), enabling baseline topology ensures data consistency and proper management of persistence.
 - For example, in a multi-node setup tracking building entry/exit events, enabling baseline auto-adjustment allows new nodes to join seamlessly, maintaining consistency across the cluster.
 
 In our example, for a single-node Ignite setup, baseline topology **is not required** because the single node handles all data operations, and there are no topology adjustments to manage.
 
 
-**Why ensure cluster is active?**
+**Why ensure that cluster is active?**
 
 - Persistent storage and other cache operations require the cluster to be in an `ACTIVE` state.
 - If the cluster is `INACTIVE`, operations like adding data or retrieving cache entries will fail.
 
-**How startup logs should look?**
+**How should startup logs look like?**
 
 - **Inactive cluster:**
 
