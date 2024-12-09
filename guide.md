@@ -171,6 +171,19 @@ public class IgnitePersistentCacheExample {
 ---
 **Run Java application and check the output**:
 
+Use sample JSON data for testing purposes, for example save this as `data.json` in the root of your Java app project:
+
+```java
+[
+  {"timestamp": "2024-12-08T09:02:30", "event": "enter", "person_id": 1},
+  {"timestamp": "2024-12-08T09:10:10", "event": "enter", "person_id": 2},
+  {"timestamp": "2024-12-08T09:05:11", "event": "exit", "person_id": 1},
+  {"timestamp": "2024-12-08T09:11:00", "event": "enter", "person_id": 3},
+  {"timestamp": "2024-12-08T09:10:53", "event": "exit", "person_id": 2},
+  {"timestamp": "2024-12-08T09:12:20", "event": "exit", "person_id": 3}
+]
+```
+
 When you run the Java application for the first time, it will store data in the cache. You should see the following output in the terminal:
 ```java
 Data stored in the cache:
