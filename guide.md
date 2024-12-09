@@ -81,7 +81,7 @@ Ignite ignite = Ignition.start("/path/to/ignite-config.xml");
 
 If your cluster has at least one data region in which **persistence** is enabled, the cluster is `INACTIVE` when you start it for the first time. In the inactive state, all operations are prohibited. The cluster must be activated before you can create caches and upload data. Cluster activation sets the current set of server nodes as the [baseline topology](https://www.gridgain.com/docs/latest/developers-guide/baseline-topology).
 
-When you restart the cluster, it is activated automatically as soon as all nodes that are registered in the baseline topology join in. However, if some nodes do not join after a restart, you must to activate the cluster manually.
+When you restart the cluster, it is activated automatically as soon as all nodes that are registered in the baseline topology join in. However, if some nodes do not join after a restart, you must activate the cluster manually.
 To enable auto-adjustment for dynamic clusters, add this line:
 ```java
 ignite.cluster().baselineAutoAdjustEnabled(true);
