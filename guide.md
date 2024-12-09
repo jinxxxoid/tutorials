@@ -2,7 +2,7 @@
 
 This tutorial introduces how to use Apache Ignite or GridGain (GG) to add persistent storage for important data. [Persistent](https://www.gridgain.com/docs/latest/developers-guide/persistence/native-persistence) storage ensures durability, fault tolerance, and data availability after system restarts.
 
-We will demonstrate this using a simple example: logging people entering and exiting a building. This example uses Apache Ignite 2 or GridGain 8, but for GridGain 9 or Apache Ignite 3, persistence is handled with [tables](https://www.gridgain.com/docs/gridgain9/latest/developers-guide/cache).
+We will demonstrate this using a simple example: logging people entering and exiting a building. This example uses Apache Ignite 2.16 (or you can use GridGain 8), but for GridGain 9 or Apache Ignite 3, persistence is handled with [tables](https://www.gridgain.com/docs/gridgain9/latest/developers-guide/cache).
 
 We will use a JSON file as the input data source, though other formats like relational databases, CSV files, or real-time streams (e.g., Apache Kafka) can also be integrated into Ignite/GridGain.
 
@@ -17,7 +17,7 @@ To follow this tutorial, you will need:
 - A running Apache Ignite or GridGain cluster.
 - JDK version 8 or later. For details, check the compatibility guides for GridGain ([GG8](https://www.gridgain.com/docs/latest/developers-guide/setup), [GG9](https://www.gridgain.com/docs/gridgain9/latest/quick-start/getting-started-guide)) or [Apache Ignite](https://ignite.apache.org/docs/latest/quick-start/java#installing-ignite).
 - Ignite/GridGain binaries and configuration files.
-- The Gson library for parsing JSON (or similar library).
+- The [Gson](https://github.com/google/gson) library for parsing JSON (or similar library).
 - The input JSON file (`data.json`) containing sample data.
 - Basic knowledge of Java programming and Ignite/GridGain concepts.
 
@@ -35,7 +35,7 @@ In this part of the tutorial, we will:
 
 ---
 
-### Modifying ignite configuration
+### Modifying Ignite configuration
 
 To enable persistence, you need to modify the Ignite configuration and specify the path to this configuration in your code. The configuration file is usually located in the `config` directory of the Ignite installation or a custom directory specified during setup.
 
@@ -60,17 +60,22 @@ To enable persistence, update your `ignite-config.xml` with the following config
 
 - This configuration defines a persistent data region (`persistentRegion`) where all cache data will be stored persistently. Setting `persistenceEnabled` to `true` ensures the data is saved to disk.
 
-Run Ignite with this configuration:
+Run Ignite with this configuration for Unix systems:
 ```bash
 ./ignite.sh --config /path/to/ignite-config.xml
 ```
+or Windows:
+```bash
+ignite.bat --config C:\path\to\ignite-config.xml
+````
+
 Specify a path to config in your Java application code:
 ```java
 Ignite ignite = Ignition.start("/path/to/ignite-config.xml");
 ```
 ---
 
-### Adding Persistent Cache in Code
+### Adding persistent cache in code
 
 
 If your cluster has at least one data region in which **persistence** is enabled, the cluster is `INACTIVE` when you start it for the first time. In the inactive state, all operations are prohibited. The cluster must be activated before you can create caches and upload data. Cluster activation sets the current set of server nodes as the [baseline topology](https://www.gridgain.com/docs/latest/developers-guide/baseline-topology).
@@ -115,7 +120,7 @@ In our example, for a single-node Ignite setup, baseline topology **is not requi
 
   This log indicates that all baseline nodes are online, and the cluster is preparing for auto-activation.
 
-Example Code to Activate the Cluster:
+Example code to check and activate the cluster if needed:
 
 ```java
 if (ignite.cluster().state() == ClusterState.INACTIVE) {
@@ -123,7 +128,7 @@ if (ignite.cluster().state() == ClusterState.INACTIVE) {
 }
 ```
 
-Update your Java program to define and use a cache linked to the persistent region:
+Update your Java code to define and use a cache linked to the persistent region:
 
 ```java
 import org.apache.ignite.Ignite;
@@ -131,7 +136,7 @@ import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.cluster.ClusterState;
 
-public class IgnitePersistentCacheExamplee {
+public class IgnitePersistentCacheExample {
     public static void main(String[] args) {
         try (Ignite ignite = Ignition.start("/path/to/ignite-config.xml")) {
             // Activate cluster if inactive
@@ -152,6 +157,10 @@ public class IgnitePersistentCacheExamplee {
             System.out.println("Data stored in the cache:");
             cache.forEach(entry -> System.out.println(entry.getKey() + " -> " + entry.getValue()));
         }
+    }
+
+    private static Map<String, String> loadJson(String jsonFilePath) {
+        // Implement reading data from JSON via Google Gson or similar library 
     }
 }
 ```
@@ -176,13 +185,13 @@ Data stored in the cache:
 
 ### Validating the setup
 
-1. **Stop Ignite**:
+**1. Stop Ignite**:
 
     - Completely shut down the Ignite node. If you are running Ignite in the terminal, use `Ctrl+C` to stop the node gracefully. Alternatively, use system commands or tools to stop any running Ignite processes.
 
     - This ensures that the cluster restarts from its persistent storage and verifies whether the data has been saved correctly.
 
-2. **Restart Ignite**:
+**2. Restart Ignite**:
 
     - Ensure the cluster restarts with the modified configuration (`ignite-config.xml`) to reinitialize the persistent region.
 
@@ -192,14 +201,14 @@ Data stored in the cache:
       ./ignite.sh --config /path/to/ignite-config.xml
       ```
 
-3. **Retrieve data**:
+**3. Retrieve data**:
 
 After the cluster is running, run the Java application again. This time, modify the program to retrieve data from the cache instead of adding new data.
 
 **Change code to retrieve cached data**:
 - In the original code, data was added to the cache using:
 ```java 
-cache = ignite.getOrCreateCache(cacheCfg); 
+var cache = ignite.getOrCreateCache(cacheCfg); 
 Map<String, String> events = loadJson("data.json");
 events.forEach(cache::put);
  ``` 
@@ -212,7 +221,7 @@ cache.forEach(entry -> System.out.println(entry.getKey() + " -> " + entry.getVal
 
 - `ignite.cache("BuildingAccessEventsCache")` refers to the existing cache created earlier. This ensures the data stored before the cluster restart is retrieved correctly.
 
-4. **Verify the output after Ignite restart**: After restarting the cluster and running the updated Java program, you should see the following output:
+**4. Verify the output after Ignite restart**: After restarting the cluster and running the updated Java program, you should see the following output:
 ```
 Data retrieved from the cache after restart:
 2024-12-08T09:02:30 -> Person 1.0 enter
@@ -225,5 +234,20 @@ Data retrieved from the cache after restart:
 
 - This confirms that the data persisted across the cluster restart and the cache configuration is correctly set up.
 
+## Building upon this tutorial
 
+In this tutorial, we **learned to**:
+- Configure Apache Ignite/GridGain for persistent storage.
+- Add and validate a cache in a Java application.
+- Retrieve persisted data across cluster restarts.
+
+Now that you’ve completed the basics, **consider experimenting with**:
+- Multi-node cluster setups to explore Ignite’s distributed capabilities.
+- Advanced cache configurations, such as enabling transactions or using different atomicity modes.
+- Integrating other data sources like databases or real-time streams.
+
+For further learning, check out:
+- [Common troubleshoting tips](https://www.gridgain.com/docs/latest/perf-troubleshooting-guide/troubleshooting)
+- [More on configuring cache](https://www.gridgain.com/docs/latest/developers-guide/configuring-caches/configuration-overview)
+- [More info on clustering concepts](https://www.gridgain.com/docs/latest/developers-guide/clustering/clustering)
 
