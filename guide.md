@@ -41,7 +41,7 @@ In this part of the tutorial, we will:
 To enable persistence, you need to modify the Ignite configuration and specify the path to this configuration in your code. The configuration file is usually located in the `config` directory of the Ignite installation or a custom directory specified during setup.
 
 - **Change both config and code**: Ensure the cluster's configuration defines a persistent region and your Java application specifies the configuration path.
-- **Run cluster with ****`--config`**** and specify config in code**: This ensures both the cluster and application use the same persistent settings. If the path is omitted in the code, the application defaults to in-memory mode, causing errors like `CacheNotFoundException` when interacting with persistent caches.
+- **Run cluster with ****`--config`**** and specify config in code**: This ensures both the cluster and application use the same persistent settings. If the path is omitted in the code, the application defaults to in-memory mode, causing errors when interacting with persistent caches. For more information on exceptions handling check Apache Ignite's [corresponding docs section](https://ignite.apache.org/docs/latest/perf-and-troubleshooting/handling-exceptions).
 - **Environment-specific paths**:
     - In **test environments**, use relative paths or mock configurations.
     - In **production**, manage paths dynamically using environment variables or configuration management tools.
