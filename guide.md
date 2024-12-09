@@ -260,7 +260,7 @@ Now that you’ve completed the basics, **consider experimenting with**:
 - Integrating other data sources like databases or real-time streams.
 
 For further learning, check out:
-- [Common troubleshoting tips](https://www.gridgain.com/docs/latest/perf-troubleshooting-guide/troubleshooting)
+- [Common troubleshooting tips](https://www.gridgain.com/docs/latest/perf-troubleshooting-guide/troubleshooting)
 - [More on configuring cache](https://www.gridgain.com/docs/latest/developers-guide/configuring-caches/configuration-overview)
 - [More info on clustering concepts](https://www.gridgain.com/docs/latest/developers-guide/clustering/clustering)
 
