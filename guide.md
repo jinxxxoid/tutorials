@@ -23,7 +23,7 @@ To follow this tutorial, you will need:
 
 ---
 
-## Add Persistence to Java Application
+## Add persistence to Java application
 
 ### Overview
 
@@ -35,7 +35,7 @@ In this part of the tutorial, we will:
 
 ---
 
-### Modifying Ignite Configuration
+### Modifying ignite configuration
 
 To enable persistence, you need to modify the Ignite configuration and specify the path to this configuration in your code. The configuration file is usually located in the `config` directory of the Ignite installation or a custom directory specified during setup.
 
@@ -80,21 +80,21 @@ To enable auto-adjustment for dynamic clusters, add this line:
 ```java
 ignite.cluster().baselineAutoAdjustEnabled(true);
 ```
-**Use Baseline Topology**:
+**Use baseline topology**:
 - If your cluster is dynamic (nodes frequently join or leave), enabling baseline topology ensures data consistency and proper management of persistence.
 - For example, in a multi-node setup tracking building entry/exit events, enabling baseline auto-adjustment allows new nodes to join seamlessly, maintaining consistency across the cluster.
 
 In our example, for a single-node Ignite setup, baseline topology **is not required** because the single node handles all data operations, and there are no topology adjustments to manage.
 
 
-**Why Ensure Cluster is Active?**
+**Why ensure cluster is active?**
 
 - Persistent storage and other cache operations require the cluster to be in an `ACTIVE` state.
 - If the cluster is `INACTIVE`, operations like adding data or retrieving cache entries will fail.
 
-**What to Look for in Startup Logs?**
+**How startup logs should look?**
 
-- **Inactive Cluster:**
+- **Inactive cluster:**
 
   ```
   [22:42:25] Ignite node started OK (id=ecfd93ef)
@@ -104,7 +104,7 @@ In our example, for a single-node Ignite setup, baseline topology **is not requi
   This log indicates the cluster is inactive. You need to activate it using either the control script or programmatically in code.
 
 
-- **Cluster with Auto-Activation:**
+- **Cluster with auto-activation:**
 
   ```
   [22:43:11] Ignite node started OK (id=8b7fc018)
@@ -156,11 +156,11 @@ public class IgnitePersistentCacheExamplee {
 }
 ```
 
-- **Cache Configuration**: Specifies the cache (`BuildingAccessEventsCache`) and links it to the `persistentRegion` defined in the configuration.
-- **Cluster Activation**: Ensures the cluster is in `ACTIVE` state, which is required for cache operations.
-- **Sample Data**: Demonstrates storing and retrieving data from the persistent cache.
+- **Cache configuration**: Specifies the cache (`BuildingAccessEventsCache`) and links it to the `persistentRegion` defined in the configuration.
+- **Cluster activation**: Ensures the cluster is in `ACTIVE` state, which is required for cache operations.
+- **Sample data**: Demonstrates storing and retrieving data from the persistent cache.
 ---
-**Run Java Application and Observe Output**:
+**Run Java application and check the output**:
 
 When you run the Java application for the first time, it will store data in the cache. You should see the following output in the terminal:
 ```java
@@ -174,7 +174,7 @@ Data stored in the cache:
 ```
 
 
-### Validating the Setup
+### Validating the setup
 
 1. **Stop Ignite**:
 
@@ -192,11 +192,11 @@ Data stored in the cache:
       ./ignite.sh --config /path/to/ignite-config.xml
       ```
 
-3. **Retrieve Data**:
+3. **Retrieve data**:
 
 After the cluster is running, run the Java application again. This time, modify the program to retrieve data from the cache instead of adding new data.
 
-**Code Changes for Retrieval**:
+**Change code to retrieve cached data**:
 - In the original code, data was added to the cache using:
 ```java 
 cache = ignite.getOrCreateCache(cacheCfg); 
@@ -212,7 +212,7 @@ cache.forEach(entry -> System.out.println(entry.getKey() + " -> " + entry.getVal
 
 - `ignite.cache("BuildingAccessEventsCache")` refers to the existing cache created earlier. This ensures the data stored before the cluster restart is retrieved correctly.
 
-4. **Expected Output After Restart**: After restarting the cluster and running the updated Java program, you should see the following output:
+4. **Verify the output after Ignite restart**: After restarting the cluster and running the updated Java program, you should see the following output:
 ```
 Data retrieved from the cache after restart:
 2024-12-08T09:02:30 -> Person 1.0 enter
