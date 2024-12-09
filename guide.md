@@ -200,19 +200,18 @@ Data stored in the cache:
 
 **1. Stop Ignite**:
 
-    - Completely shut down the Ignite node. If you are running Ignite in the terminal, use `Ctrl+C` to stop the node gracefully. Alternatively, use system commands or tools to stop any running Ignite processes.
+- Completely shut down the Ignite node. If you are running Ignite in the terminal, use `Ctrl+C` to stop the node gracefully. Alternatively, use system commands or tools to stop any running Ignite processes.
 
-    - This ensures that the cluster restarts from its persistent storage and verifies whether the data has been saved correctly.
+- This ensures that the cluster restarts from its persistent storage and verifies whether the data has been saved correctly.
 
 **2. Restart Ignite**:
 
-    - Ensure the cluster restarts with the modified configuration (`ignite-config.xml`) to reinitialize the persistent region.
+- Ensure the cluster restarts with the modified configuration (`ignite-config.xml`) to reinitialize the persistent region.
 
-    - Restart the node using the same configuration:
-
-      ```bash
-      ./ignite.sh --config /path/to/ignite-config.xml
-      ```
+- Restart the node using the same configuration:
+```bash
+./ignite.sh --config /path/to/ignite-config.xml
+```
 
 **3. Retrieve data**:
 
