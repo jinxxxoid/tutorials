@@ -107,7 +107,7 @@ In our example, for a single-node Ignite setup, baseline topology **is not requi
   [22:42:25] >>> Ignite cluster is in INACTIVE state (limited functionality available). Use control.(sh|bat) script or IgniteCluster.state(ClusterState.ACTIVE) to change the state.
   ```
 
-  This log indicates the cluster is inactive. You need to activate it using either the control script or programmatically in code.
+  This log indicates the cluster is inactive. You need to activate it using either the [control script](https://ignite.apache.org/docs/latest/tools/control-script) or programmatically in code.
 
 
 - **Cluster with auto-activation:**
